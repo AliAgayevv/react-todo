@@ -2,7 +2,6 @@ import './App.css';
 import Header from './components/Header';
 import { useRef, useState, useEffect } from 'react';
 import NewTask from './components/NewTask';
-import TaskList from './components/TaskList';
 
 function App() {
   const [task, setTask] = useState('');
@@ -10,13 +9,22 @@ function App() {
   const inputRef = useRef(null);
 
   useEffect(() => {
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+      setTasks(JSON.parse(storedTasks));
+    }
     inputRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   function handleSubmit(e) {
     e.preventDefault();
     if (task.trim()) {
-      setTasks([...tasks, { name: task, isEnd: false }]);
+      const newTask = { id: Date.now(), name: task, isEnd: false };
+      setTasks([...tasks, newTask]);
       setTask('');
     }
   }
@@ -31,16 +39,17 @@ function App() {
     }
   }
 
-  function handleDeleteTask(index) {
-    setTasks(tasks.filter((_, i) => i !== index));
+  function handleDeleteTask(id) {
+    const newTasks = tasks.filter(task => task.id !== id);
+    setTasks(newTasks);
   }
+  
 
   function handleEditTask(index, newName) {
-    setTasks(
-      tasks.map((task, i) =>
-        i === index ? { ...task, name: newName } : task
-      )
+    const newTasks = tasks.map((task, i) =>
+      i === index ? { ...task, name: newName } : task
     );
+    setTasks(newTasks);
   }
 
   return (
@@ -62,19 +71,19 @@ function App() {
           +
         </button>
 
-        <TaskList />
-
         <div className="bg-white h-screen flex flex-col">
           <div className="border-t-2 border-[#010101] w-full h-px mt-4"></div>
-          {tasks.map((taskItem, index) => (
-            <NewTask 
-              key={index} 
-              name={taskItem.name} 
-              isEnd={taskItem.isEnd} 
-              onDelete={() => handleDeleteTask(index)} 
-              onEdit={(newName) => handleEditTask(index, newName)} 
-            />
-          ))}
+          {tasks.map(taskItem => (
+  <NewTask 
+    key={taskItem.id} 
+    id={taskItem.id}
+    name={taskItem.name} 
+    isEnd={taskItem.isEnd} 
+    onDelete={() => handleDeleteTask(taskItem.id)}
+    onEdit={(newName) => handleEditTask(taskItem.id, newName)} 
+  />
+))}
+
         </div>
       </div>
     </div>
