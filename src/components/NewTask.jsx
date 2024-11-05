@@ -1,33 +1,27 @@
 import { useState } from "react";
 
 export default function NewTask(props) {
-    const taskName = props.name;
+    const { name: taskName, isEnd: initialIsEnd, onDelete } = props;
 
-    const [isEnd, setIsEnd] = useState(props.isEnd)
+    const [isEnd, setIsEnd] = useState(initialIsEnd);
 
-
-    function handleTask()
-    {
-        setIsEnd(() => !isEnd)
-        console.log(isEnd)
-        // isEnd === false ? isEnd = !isEnd : isEnd = isEnd
-        // console.log(isEnd);
+    function handleTask() {
+        setIsEnd(!isEnd);
     }
 
     return (
-        
-            <div className="flex justify-between mt-5">
-                {
-                    isEnd === true ?  <button onClick={handleTask} className="ml-5 line-through opacity-25  " >{taskName}</button> : 
-                    <button onClick={handleTask} className="ml-5" >{taskName}</button>
-                }
-                
-                <div className="flex gap-3 mr-5">
-                    <button className="bg-transparent border-custom-gold" /> Delete
-                    <button className="bg-transparent border-custom-gold" /> Edit
-                </div>
+        <div className="flex justify-between mt-5">
+            <button 
+                onClick={handleTask} 
+                className={`ml-5 ${isEnd ? 'line-through opacity-25' : ''}`}
+            >
+                {taskName}
+            </button>
+            
+            <div className="flex gap-3 mr-5">
+                <button onClick={onDelete} className="delete-button">Delete</button>
+                <button className="bg-transparent border-custom-gold">Edit</button>
             </div>
-
-    )
+        </div>
+    );
 }
-
