@@ -1,12 +1,11 @@
 import { useState } from "react";
 
-export default function NewTask({ name: initialTaskName, isEnd: initialIsEnd, onDelete, onEdit }) {
-    const [isEnd, setIsEnd] = useState(initialIsEnd);
+export default function NewTask({ name: initialTaskName, isEnd: initialIsEnd, onDelete, onEdit, onToggleEnd }) {
     const [isEditing, setIsEditing] = useState(false);
     const [taskName, setTaskName] = useState(initialTaskName);
 
     function handleTaskToggle() {
-        setIsEnd(!isEnd);
+        onToggleEnd();
     }
 
     function handleEditToggle() {
@@ -18,8 +17,8 @@ export default function NewTask({ name: initialTaskName, isEnd: initialIsEnd, on
     }
 
     function handleSave() {
-        onEdit(taskName); // Save the edited task name
-        setIsEditing(false); // Exit edit mode
+        onEdit(taskName); 
+        setIsEditing(false);
     }
 
     function handleKeyPress(e) {
@@ -40,19 +39,19 @@ export default function NewTask({ name: initialTaskName, isEnd: initialIsEnd, on
                 />
             ) : (
                 <button
-                    onClick={handleTaskToggle}
-                    className={`ml-5 ${isEnd ? 'line-through opacity-25' : ''}`}
+                    onClick={handleTaskToggle} 
+                    className={`ml-5 ${initialIsEnd ? 'line-through opacity-25' : ''}`}
                 >
                     {taskName}
                 </button>
             )}
             
             <div className="flex gap-3 mr-5">
-                <button onClick={onDelete} className="delete-button">Delete</button>
+                <button onClick={onDelete} className="delete-button border-2 p-2">Delete</button>
                 {isEditing ? (
-                    <button onClick={handleSave} className="save-button">Save</button>
+                    <button onClick={handleSave} className="save-button border-2 p-2">Save</button>
                 ) : (
-                    <button onClick={handleEditToggle} className="edit-button">Edit</button>
+                    <button onClick={handleEditToggle} className="edit-button border-2 p-2">Edit</button>
                 )}
             </div>
         </div>
