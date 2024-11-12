@@ -1,40 +1,45 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   push:
     branches:
-      - main  # Trigger the action on push to main branch
+      - main
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-
-- name: Show directory structure
-  run: ls -R
-
-- name: Show Node.js version
-  run: node -v
-  
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+      - name: Setup Node
+        uses: actions/setup-node@v3
 
       - name: Install dependencies
-        run: npm install
+        uses: bahmutov/npm-install@v1
 
       - name: Build project
         run: npm run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3  # Updated to v3
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v3
         with:
-          name: build-artifacts
+          name: production-files
+          path: ./dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: production-files
           path: ./dist
 
       - name: Deploy to GitHub Pages
