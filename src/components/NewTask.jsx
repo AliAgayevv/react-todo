@@ -4,27 +4,9 @@ export default function NewTask({ name: initialTaskName, isEnd: initialIsEnd, on
     const [isEditing, setIsEditing] = useState(false);
     const [taskName, setTaskName] = useState(initialTaskName);
 
-    function handleTaskToggle() {
-        onToggleEnd();
-    }
-
-    function handleEditToggle() {
-        setIsEditing(!isEditing);
-    }
-
-    function handleTaskNameChange(e) {
-        setTaskName(e.target.value);
-    }
-
     function handleSave() {
         onEdit(taskName); 
         setIsEditing(false);
-    }
-
-    function handleKeyPress(e) {
-        if (e.key === "Enter") {
-            handleSave();
-        }
     }
 
     return (
@@ -32,14 +14,14 @@ export default function NewTask({ name: initialTaskName, isEnd: initialIsEnd, on
             {isEditing ? (
                 <input
                     value={taskName}
-                    onChange={handleTaskNameChange}
-                    onKeyPress={handleKeyPress}
+                    onChange={((e) => setTaskName(e.target.value))}
+                    onKeyPress={((e) => e.key === "Enter" ? handleSave() : null)}
                     className="ml-5 border-b border-gray-300 outline-none"
                     autoFocus
                 />
             ) : (
                 <button
-                    onClick={handleTaskToggle} 
+                    onClick={(() => onToggleEnd())}
                     className={`ml-5 ${initialIsEnd ? 'line-through opacity-25' : ''}`}
                 >
                     {taskName}
@@ -51,7 +33,7 @@ export default function NewTask({ name: initialTaskName, isEnd: initialIsEnd, on
                 {isEditing ? (
                     <button onClick={handleSave} className="save-button border-2 p-2">Save</button>
                 ) : (
-                    <button onClick={handleEditToggle} className="edit-button border-2 p-2">Edit</button>
+                    <button onClick={(() => setIsEditing(!isEditing))} className="edit-button border-2 p-2">Edit</button>
                 )}
             </div>
         </div>

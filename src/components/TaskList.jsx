@@ -5,10 +5,7 @@ function TaskList() {
                 <span className="p-5 text-xl font-bold">Tasks</span>
                 <span className="p-5 text-xl font-bold">Actions</span>
             </div>
-
-        
     </div>
-
     )
 }
 
