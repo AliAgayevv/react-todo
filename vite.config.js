@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/React_TODO/', // Proje adıyla aynı olan GitHub repo adı
+  base: '/React_TODO/', // Repository adınız burada 'React_TODO' olduğu için bu şekilde yazın
 });
