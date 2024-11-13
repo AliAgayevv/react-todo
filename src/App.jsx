@@ -17,7 +17,6 @@ function App() {
     return storedTasks ? JSON.parse(storedTasks) : []
   })  
   
-  console.log("firsh",tasks)
   const inputRef = useRef(null);
 
   // useEffect(() => {
