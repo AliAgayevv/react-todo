@@ -1,12 +1,12 @@
 function TaskList() {
     return (
-        <div className="bg-white">
-            <div className="flex justify-between">
-                <span className="p-5 text-xl font-bold">Tasks</span>
-                <span className="p-5 text-xl font-bold">Actions</span>
+        <div className="bg-gray-100 rounded-lg shadow-md p-4">
+            <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-2">
+                <span className="text-xl font-semibold text-gray-700">Tasks</span>
+                <span className="text-xl font-semibold text-gray-700">Actions</span>
             </div>
-    </div>
-    )
+        </div>
+    );
 }
 
 export default TaskList;

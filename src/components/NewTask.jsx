@@ -10,31 +10,48 @@ export default function NewTask({ name: initialTaskName, isEnd: initialIsEnd, on
     }
 
     return (
-        <div className="flex justify-between mt-5">
+        <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow mt-4">
             {isEditing ? (
                 <input
                     value={taskName}
-                    onChange={((e) => setTaskName(e.target.value))}
-                    onKeyPress={((e) => e.key === "Enter" ? handleSave() : null)}
-                    className="ml-5 border-b border-gray-300 outline-none"
+                    onChange={(e) => setTaskName(e.target.value)}
+                    onKeyPress={(e) => (e.key === "Enter" ? handleSave() : null)}
+                    className="flex-grow mr-4 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     autoFocus
                 />
             ) : (
-                <button
-                    onClick={(() => onToggleEnd())}
-                    className={`ml-5 ${initialIsEnd ? 'line-through opacity-25' : ''}`}
+                <span
+                    onClick={onToggleEnd}
+                    className={`flex-grow mr-4 cursor-pointer text-lg ${
+                        initialIsEnd ? "line-through text-gray-400" : "text-gray-800"
+                    }`}
                 >
                     {taskName}
-                </button>
+                </span>
             )}
-            
-            <div className="flex gap-3 mr-5">
-                <button onClick={onDelete} className="delete-button border-2 p-2">Delete</button>
+
+            <div className="flex items-center gap-3">
                 {isEditing ? (
-                    <button onClick={handleSave} className="save-button border-2 p-2">Save</button>
+                    <button
+                        onClick={handleSave}
+                        className="px-4 py-2 text-sm font-semibold text-white bg-green-500 rounded-lg hover:bg-green-600 transition-colors"
+                    >
+                        Save
+                    </button>
                 ) : (
-                    <button onClick={(() => setIsEditing(!isEditing))} className="edit-button border-2 p-2">Edit</button>
+                    <button
+                        onClick={() => setIsEditing(!isEditing)}
+                        className="px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                        Edit
+                    </button>
                 )}
+                <button
+                    onClick={onDelete}
+                    className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors"
+                >
+                    Delete
+                </button>
             </div>
         </div>
     );
